@@ -10,10 +10,13 @@ from auxiliary import flatten
 from webcrawler import LinkManager
 
 # Page URLs with 'cheap' appartments
-page_url_immoscout = 'https://www.immobilienscout24.de/Suche/S-2/Wohnung-Miete/Bayern/Muenchen/-/2,00-/60,00-/EURO--1800,00/-/-/-/-/true'
-prefix_url_immoscout = "https://www.immobilienscout24.de"
-page_url_immonet = 'https://www.immonet.de/immobiliensuche/sel.do?fromarea=60.0&city=121673&parentcat=1&suchart=2&marketingtype=2&toprice=1800.0&fromrooms=2.0&radius=0&facilities=44&facilities=110&facilities=189&facilities=20&listsize=26&objecttype=1&pageoffset=1&sortby=19'
-prefix_url_immonet = "https://www.immonet.de"
+# page_url_immoscout = 'https://www.immobilienscout24.de/Suche/S-2/Wohnung-Miete/Bayern/Muenchen/-/2,00-/60,00-/EURO--1800,00/-/-/-/-/true'
+# prefix_url_immoscout = "https://www.immobilienscout24.de"
+# page_url_immonet = 'https://www.immonet.de/immobiliensuche/sel.do?fromarea=60.0&city=121673&parentcat=1&suchart=2&marketingtype=2&toprice=1800.0&fromrooms=2.0&radius=0&facilities=44&facilities=110&facilities=189&facilities=20&listsize=26&objecttype=1&pageoffset=1&sortby=19'
+# prefix_url_immonet = "https://www.immonet.de"
+
+page_url_immowelt = "https://www.immowelt.de/liste/muenchen/wohnungen/mieten?lat=48.1432&lon=11.55661&sr=10&primi=900&prima=2200&wflmi=50&sort=createdate%2Bdesc"
+prefix_url_immowelt = "https://www.immowelt.de"
 
 # Grab Bot Key & init Telebot
 BOT_KEY = sys.argv[1]
@@ -33,11 +36,12 @@ while True:
             start = time.time()
     
         bot.update_subscribers()
+
+        immowelt = LinkManager(page_url_immowelt, prefix_url_immowelt, {"class": "listitem clear relative js-listitem"})
+        # immoscout = LinkManager(page_url_immoscout, prefix_url_immoscout, {"class": "result-list-entry__brand-title-container"})
+        # immonet = LinkManager(page_url_immonet, prefix_url_immonet, {"class": "block ellipsis text-225 text-default"})
     
-        immoscout = LinkManager(page_url_immoscout, prefix_url_immoscout, {"class": "result-list-entry__brand-title-container"})
-        immonet = LinkManager(page_url_immonet, prefix_url_immonet, {"class": "block ellipsis text-225 text-default"})
-    
-        app_urls = immoscout.links + immonet.links
+        app_urls = immowelt.links # + immonet.links
         flatten(app_urls)
     
         for link in app_urls:

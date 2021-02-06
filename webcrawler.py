@@ -9,7 +9,9 @@ class LinkManager:
         self.webpage = requests.get(page_url)
         self.soup = BeautifulSoup(self.webpage.text, 'html.parser')
         self.links = []
-        app_links = self.soup.find_all("a", query)
+        app_links = self.soup.find_all("div", query)
 
         for el in app_links:
-            self.links.append(self.prefix_url + el.attrs['href'])
+            children = el.findChildren("a", recursive=False)
+            for a in children:
+                self.links.append(self.prefix_url + a.attrs['href'])
